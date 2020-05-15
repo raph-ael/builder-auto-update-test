@@ -38,8 +38,8 @@ app.on('activate', function () {
   }
 });
 
-ipcMain.on('app_version', (event) => {
-  event.sender.send('app_version', { version: app.getVersion() });
+ipcMain.on('app-version', (event) => {
+  event.sender.send('app-version', { version: app.getVersion() });
 });
 
 ipcMain.on('restart-app', () => {

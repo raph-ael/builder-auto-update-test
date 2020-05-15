@@ -1,0 +1,4 @@
+appId: net.geldfrei.ElectronAutoUpdate
+publish:
+  provider: github
+  token: 465d7ad1d0864d5394b36905a964259f013a6a81

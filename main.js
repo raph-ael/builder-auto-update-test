@@ -16,10 +16,15 @@ function createWindow () {
     mainWindow = null;
   });
 
-  mainWindow.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
-  });
+  mainWindow.webContents.on('did-finish-load', () => {
 
+    setTimeout(() => {
+
+      console.log('check for updates');
+      autoUpdater.checkForUpdatesAndNotify();
+
+    }, 5000);
+  });
 }
 
 app.on('ready', () => {

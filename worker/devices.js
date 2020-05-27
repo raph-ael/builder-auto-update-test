@@ -1,5 +1,5 @@
 const path = require('path');
-const drivelist = require('drivelist');
+const drivelist = require('electron-drivelist');
 const disk = require('diskusage');
 const helper = require ("../helper");
 const fs = require('fs');

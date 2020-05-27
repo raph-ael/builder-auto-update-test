@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const glob = require('glob');
 const FileType = require('file-type');
 const util = require('util');
 const helper = require("../helper");

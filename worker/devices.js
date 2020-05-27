@@ -1,6 +1,5 @@
 const path = require('path');
-const drivelist = require('electron-drivelist');
-const disk = require('diskusage');
+const nodeDiskInfo = require('node-disk-info');
 const helper = require ("../helper");
 const fs = require('fs');
 const filesystem = require("./filesystem");
@@ -12,7 +11,7 @@ let devices = {
 
     list: async (callback) => {
 
-        const drives = await drivelist.list();
+        const drives = await nodeDiskInfo.getDiskInfoSync();
 
         console.log(drives);
 
@@ -20,21 +19,24 @@ let devices = {
 
         await helper.asyncForEach(drives, async (drive) => {
 
-            if(drive.mountpoints.length >= 1) {
-                let drive_path = drive.mountpoints[0].path;
-
-                let { free } = await disk.check(drive_path);
+            if(drive.blocks > 1999136 && drive.filesystem.indexOf('udev') === -1 && drive.filesystem.indexOf('tmpfs') === -1) {
+                let mount_parts = drive.mounted.split('/');
+                let name = mount_parts[mount_parts.length-1]+'';
+                if(name === '') {
+                    name = drive.filesystem;
+                }
                 out.push({
-                    name: drive.device,
-                    path: drive_path,
-                    size: drive.size,
-                    free: free,
-                    busy: (drive.size-free),
-                    size_format: helper.bytesToSize(drive.size),
-                    free_format: helper.bytesToSize(free),
-                    busy_format: helper.bytesToSize(drive.size-free)
+                    name: name,
+                    path: drive.mounted,
+                    size: drive.blocks*1024,
+                    free: drive.available*1024,
+                    busy: drive.used*1024,
+                    size_format: helper.bytesToSize(drive.blocks*1024),
+                    free_format: helper.bytesToSize(drive.available*1024),
+                    busy_format: helper.bytesToSize(drive.used*1024)
                 });
             }
+
         });
 
         return out;

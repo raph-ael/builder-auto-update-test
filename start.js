@@ -18,8 +18,6 @@ function sendWindowMessage(targetWindow, message, payload) {
   targetWindow.webContents.send(message, payload);
 }
 
-
-
 const registerProtocols = () => {
 
   protocol.registerFileProtocol('coverart', (request, callback) => {
@@ -48,7 +46,8 @@ const createWindow = () => {
     height: 600,
     frame: false,
     webPreferences: { nodeIntegration: true },
-    show: false
+    show: false,
+    hasShadow: true
   });
 
   // and load the index.html of the app.
@@ -59,16 +58,16 @@ const createWindow = () => {
     mainWindow.show();
   });
 
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 
   workerWindow = new BrowserWindow({
-    show: true,
+    show: false,
     width: 800,
     height: 600,
     webPreferences: { nodeIntegration: true }
   });
 
-  workerWindow.webContents.openDevTools();
+  //workerWindow.webContents.openDevTools();
 
   workerWindow.loadFile('worker.html');
 
